@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}قائمة الزبناء{% endblock title %}
+{% block content %}
+ 
+<div class="container p-3 my-4 rounded border border-info">
+  <div class="text-center">
+
+    <h2 class="d-inline position-relative">
+      الزبناء
+      {% if mng == True %}
+      <a class="link-underline link-underline-opacity-0 position-absolute  badge rounded-pill bg-success fs-6 " href="{% url 'addclient' %}">أضف زبون</a>
+      {% endif %}
+    </h2>
+  </div>
+    <hr>
+    {% include 'partials/_alerts.html' %}
+    {% if request.user.is_authenticated %}
+      {% if clients.count < 1 %}
+        <div class="alert alert-warning text-center " role="alert">
+          <h2>عذرا، لم يتم تسجيل أي زبون حاليا.</h2>
+        </div>
+        <div class="d-grid gap-2"> 
+          <a href="{% url 'addclient' %}" class="btn btn-success ">إضافة زبون</a> 
+        </div>
+      {% else %}
+        <div class="row row-cols-xs-2 row-cols-sm-4 row-cols-md-6 row-cols-xl-6 g-2">
+            {% for clt in clients %}
+                <!--monitor fnameLA lnameLA ncreation nclient-->
+                    <div class="col">
+                        <div class="card border-secondary  h-100">
+                            <img dir="ltr" src="{{ clt.photo_clt.url }}"  class="card-img-top" alt="{{clt.fnameLA}}">
+                            <div class="mt-2">
+                                <h5 class="card-title text-center">
+                                  <a  class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal-{{clt.id}}">
+                                    {{ clt.fnameLA }} {{clt.lnameLA}}
+                                  </a>
+                                </h5>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
+                                  <a href="{% url 'controle' clt_id=clt.id %}" class="btn btn-outline-danger" ><small class="text-body-secondary">إدارة البيانات</small></a>
+                                  <hr>
+                                    <a href="{% url 'paiement' clt_id=clt.id %}" class="btn btn-outline-success" ><small class="text-body-secondary">إدارة الموارد المالية</small></a>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" id="exampleModal-{{clt.id}}" tabindex="-1" aria-labelledby="exampleModalLabel-{{clt.id}}" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel-{{clt.id}}">البيانات الرئيسية</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="text-center">
+                              <span >رقم الترتيبي : {{clt.id}}</span><br>
+                              <span >رقم الزبون : {{clt.nclient}}</span><br>
+                              <span >رقم التسجيل</span> : <span dir="ltr">{{clt.ncreation}}</span><br>
+                              <span >إسم المدرب : </span>
+                              <span>{{clt.monitor.fnameAR}} {{clt.monitor.lnameAR}}</span><br>
+                              <span>عدد الحصص النظرية : </span><span>{{clt.get_controle.0.theoretic}}</span><br>
+                              <span>عدد الحصص التطبيقية : </span><span>{{clt.get_controle.0.practical}}</span><br>
+                              <a class="badge text-bg-success" href="{% url 'contractpdf' clt.pk  %}">العقد</a> 
+                              <a class="badge text-bg-success" href="{% url 'certifiedpdf' clt.pk  %}" >شهادة نهاية التكوين</a> <br>
+                              <a href="{% url 'updateclient' clt_id=clt.id %}" class="btn btn-outline-danger mt-2" ><small class="text-body-secondary">تعديل البيانات</small></a>
+                          </div>
+ 
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+            {% endfor %}
+        </div>
+      {% endif %}
+    {% else %}
+    <h4 class="alert alert-danger">
+        You maust be <a href="{% url 'signin' %}" class="text-dark">Logged in</a>
+    </h4>
+    {% endif %}
+</div>
+
+{% include 'clients/pagination.html' %} 
+
+
+
+
+
+
+
+{% endblock content %}
+
+<!--
+    <form class="row g-2" action="{% url 'clients' %}" method="get">
+    
+    <div class="col-md-6">
+      <label for="inputEmail4" class="form-label">الإسم الشخصي</label>
+      <input type="text" name="sfname" class="form-control" id="inputEmail4">
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label">الإسم الشخصي</label>
+      <input type="text" name="slname" class="form-control" id="inputPassword4">
+    </div>
+    <div class="col-md-6">
+      <label for="inputZip" class="form-label">رقم البطاقة الوطنية</label>
+      <input type="text" name="scnie" class="form-control" id="inputZip">
+    </div>
+    <div class="col-md-6">
+      <label for="inputAddress" class="form-label">رقم الهاتف</label>
+      <input type="tel" name="sphone" class="form-control text-center " id="inputAddress" max="14" placeholder="06xxxxxxxx">
+    </div>
+    <div class="col-md-6">
+      <label for="inputState" class="form-label">الثمن</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text">من </span>
+        <input type="number" maxlength="4" max="9999" min="50" value="500" name="spfrom" class="form-control text-center " aria-label="MAD">
+        <span class="input-group-text mr-2">درهم</span>
+        <span class="input-group-text">الى </span>
+        <input type="number" maxlength="4" max="9999" min="50" value="3000" name="spto" class="form-control text-center " aria-label="MAD">
+        <span class="input-group-text">درهم</span>
+      </div>
+    </div> 
+    <div class="col-md-6">
+      <label for="inputState" class="form-label">إسم المدرب</label>
+      <select id="inputState" name="smnt" class="form-select">
+            <option value="1">hassan</option> 
+            <option value="2">mohamed</option> 
+      </select>
+    <div>
+    dosnt work with 
+    <div class="col-12">
+      <div class="form-check">
+        <input class="form-check-input" name="scs" type="checkbox" id="gridCheck">
+        <label class="form-check-label" for="gridCheck">
+        حساسية الأحرف
+        </label>
+      </div>
+    </div>
+    
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">إبحث</button>
+      </div>
+    </form>
+-->

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}الإحصائيات{% endblock %}
+
+{% block content %}
+<style>
+  .colorstat{
+    background-color: #212529;
+  }
+</style>
+<div class="row gap-0 ">
+  <div class="col-6">
+    {{chart_gender_month|safe}}
+  </div>
+  <div class="col-6">
+    {{chart_gender_monitor|safe}}
+  </div>
+  <div class="col-12">
+    {{chart_paiement|safe}}
+  </div>
+  <div class="col-12">
+    {{chart_total_client_result|safe}}
+  </div>
+</div>
+
+{% endblock content %}

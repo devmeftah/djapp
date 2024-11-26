@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}تأهيل المرشح{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div dir="rtl" class="container my-3">
+    {% include 'partials/_alerts.html' %}
+    <h1>
+{% if result == 1 %}
+  <div class="alert alert-success" role="alert">
+    هذا المرشح قد إجتاز الإمتحان بنجاح، <a href="{% url 'clients' %}" class="alert-link">الذهاب الى صفحة الزبناء</a>.
+  </div>
+{% else %}
+    </h1>
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                مرحلة التعليم
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ eduform|crispy }}
+                        <div class="d-grid gap-2">
+                            <input class="btn btn-primary" name="saveedu" type="submit" value="تأكيد">                    
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item" >
+            <h2 class="accordion-header">
+                <button class="accordion-button  collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                مرحلة تحديد تاريخ الإمتحان
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ ctlform|crispy }}
+                        <div class="d-grid gap-2">
+                            <input class="btn btn-primary" name="savecnt" type="submit" value="تأكيد">
+                        </div>               
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-grid mt-3">
+        <a href="{% url 'clients' %}" class="btn btn-success">الرجوع إلى قائمة الزبناء</a>   
+    </div>  
+{% endif %} 
+</div>
+
+{% endblock content %}

@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}بيانات الزبون{% endblock title %}
+{% block content %}
+<div class="container p-3 my-4 rounded border border-info">
+    {% if is_editpage == True %}
+    <h2 class="text-center">تعديل بيانات الزبون</h2>
+    {% else  %}
+    <h2 class="text-center">زبون جديد</h2>
+    {% endif %}
+
+    <hr>
+    {% include 'partials/_alerts.html' %}
+
+    {% if monitors.count < 1 %}
+        <div class="alert alert-warning text-center " role="alert">
+            <h2>عذرا، لم يتم تسجيل أي مدرب حاليا.</h2>
+        </div>
+        <div class="d-grid gap-2"> 
+            <a href="{% url 'addmonitor' %}" class="btn btn-success ">إضافة مدرب</a> 
+        </div>
+    {% else %}
+    
+        {% if is_added == True %} 
+            <form method="post" enctype="multipart/form-data" style="display:none;">
+        {% else  %}
+            <form method="post" enctype="multipart/form-data">
+        {% endif %}
+        
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <span dir="ltr" class="input-group-text d-none d-sm-block" id="basic-addon1">إسم المدرب</span>
+                    <select tabindex="1" class="form-select text-center" value="{{monitor}}" name="monitor" required>
+                        <option>إختر إسم المدرب</option>
+                        {% for mnt in monitors %}
+                        <option value="{{mnt.id}}" 
+                        {% if monitor == mnt.id  %}
+                        selected 
+                        {% endif %}
+                        >{{mnt.fnameAR}} {{mnt.lnameAR}}</option>
+                        {% endfor %}
+                    </select>
+                    <a class="btn btn-warning" href="{% url 'addmonitor' %}" >أضف مدرب</a>
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Monitor name</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">الإسم الشخصي</span>
+                    <input type="text" name="fnameAR" tabindex="7" value="{{fnameAR}}"  class="keyboardInput form-control" placeholder="الإسم الشخصي" >
+                    <span class="input-group-text"> | | </span>
+                    <input type="text" dir="ltr" tabindex="2" name="fnameLA" value="{{fnameLA}}" class="form-control" placeholder="First name">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">First name</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">الإسم العائلي</span>
+                    <input type="text" name="lnameAR" tabindex="8" value="{{lnameAR}}" class="keyboardInput form-control" placeholder="الإسم العائلي" >
+                    <span class="input-group-text"> | | </span>
+                    <input type="text" dir="ltr" tabindex="2" name="lnameLA" value="{{lnameLA}}" class="form-control" placeholder="Last name" >
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Last name</span>
+                </div>
+                
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block"  id="basic-addon1">رقم ب.ت.و</span>
+                    <input type="text" name="cnie" tabindex="5" value="{{cnie}}" dir="ltr" class="form-control text-center" placeholder="رقم بطاقة التعريف الوطنية">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">CNIE</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block keyboardInput" id="basic-addon1">مكان الإزدياد</span>
+                    <input type="text" name="placeofbirthAR" tabindex="10"  value="{{placeofbirthAR}}" class="form-control" placeholder="مكان الإزدياد">
+                    <span class="input-group-text d-none d-sm-block keyboardInput" id="basic-addon1">Place of birth</span>
+                    <span class="input-group-text"> | | </span>
+                    <span class="input-group-text" id="basic-addon1">تاريخ الإزدياد</span>
+                    <input type="date" name="dateofbirth" tabindex="11"  dir="ltr" value="{{ dateofbirth|date:'Y-m-d' }}"  id="dayte" class="form-control text-center">                   
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Date of birth</span>
+                </div>
+				<div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">العنوان</span>
+                    <input type="text" name="addressAR" tabindex="12"  dir="ltr"  value="{{addressAR}}" placeholder="العنوان" class="form-control text-center">                   
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Address</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">الجنس</span>
+
+                    <div  class="text-center form-control ">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio1">ذكر</label>
+                            <input class="form-check-input" tabindex="12" type="radio" name="gender" id="inlineRadio1"
+                                {% if gender == 1  %}
+                                checked 
+                                {% endif %}
+                            value="1" >
+                            <label class="form-check-label" for="inlineRadio1">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio2">انثى</label>
+                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" 
+                                {% if gender == 2  %}
+                                    checked 
+                                {% endif %} 
+                            value="2" >
+                            <label class="form-check-label" for="inlineRadio2">Female</label>
+                        </div>
+                    </div>
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Gender</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">الجنسية (اختياري)</span>
+                    {% if  is_editpage == False %}
+                    <input type="text" name="nationality" tabindex="13"  value="MAROCAINE" maxlength="15" dir="ltr" class="form-control text-center" placeholder="الجنسية" >
+                    {% else %}
+                    <input type="text" name="nationality" tabindex="13"  value="{{nationality}}" maxlength="15" dir="ltr" class="form-control text-center" placeholder="الجنسية" >
+                    {% endif  %}
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Nationality</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">رقم الهاتف</span>
+                    <input type="tel" name="phone" tabindex="14" maxlength="10"  value="{{phone}}" dir="ltr" class="form-control text-center" placeholder="رقم الهاتف" aria-label="رقم الهاتف">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Phone number</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span dir="ltr" class="input-group-text" id="basic-addon1">الصنف</span>
+                    <select class="form-select text-center" tabindex="15"  value="{{category}}" name="category" aria-label="الصنف" required>
+                        <option value="1">A</option>
+                        <option value="2">A1</option>
+                        <option value="3" selected>B</option>
+                    </select>
+                    <span class="input-group-text" id="basic-addon1">Category</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block"  id="basic-addon1">رقم المعرف (اختياري)</span>
+                    <input type="text" name="refweb" tabindex="5" value="{{refweb}}" dir="ltr" class="form-control text-center" placeholder="رقم المعرف">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">ref web</span>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text " for="inputGroupFile02">الصورة الشخصية (اختياري)</label>
+                    <input type="file"  class="form-control"  tabindex="17" name="photo_clt" accept="image/*" id="photo_clt">
+                    <label class="input-group-text d-none d-sm-block" for="photo_clt">Profile photo</label>
+                </div>
+                <br />
+                {% if is_editpage == True  %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" name="btnedit" tabindex="18"  class="btn btn-danger">تعديل البيانات</button>  
+                    </div>   
+                {%else%}
+                    <div class="d-grid">
+                        <button type="submit" name="btnsave" tabindex="18"  class="btn btn-success">تسجيل</button>
+                    </div>
+                {% endif %}
+                <div class="d-grid mt-2">
+                    <a href="{% url 'clients' %}" tabindex="19"  class="btn btn-primary">الرجوع إلى قائمة الزبناء</a>   
+                </div>   
+            </form>
+    {% endif %}
+</div>
+<!--
+    <link rel="stylesheet" href="{% static 'css/vk.css' %}">
+    <script src="{% static 'js/vk.js' %}"></script>
+<script type="text/javascript">
+    // Allow Arabic Characters only
+    function CheckArabicCharactersOnly(e) {
+        var unicode = e.charCode ? e.charCode : e.keyCode
+
+        if (unicode != 8) {
+            if (unicode == 32 || unicode >= 65 && unicode <= 90 || unicode >= 97 && unicode <= 122)
+                return true;
+            else {
+                if ((unicode < 48 || unicode > 57) && (unicode < 0x0600 || unicode > 0x06FF)) //if not a number or arabic
+                    return false;
+            }
+        }
+
+
+    }
+</script>
+
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script type="text/javascript">
+    function restrictInputOtherThanArabic($field)
+    {
+      // Arabic characters fall in the Unicode range 0600 - 06FF
+      var arabicCharUnicodeRange = /[\u0600-\u06FF]/;
+
+      $field.bind("keypress", function(event)
+      {
+        var key = event.which;
+        // 0 = numpad
+        // 8 = backspace
+        // 32 = space
+        if (key==8 || key==0 || key === 32)
+        {
+          return true;
+        }
+
+        var str = String.fromCharCode(key);
+        if ( arabicCharUnicodeRange.test(str) )
+        {
+          return true;
+        }
+
+        return false;
+      });
+    }
+
+    jQuery(document).ready(function() {
+        // allow arabic characters only for following fields
+        restrictInputOtherThanArabic($('#arabiconly'));
+    });
+    </script>
+-->
+{% endblock content %}

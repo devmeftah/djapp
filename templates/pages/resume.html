@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}الرئيسية{% endblock title %}
+{% block content %}
+
+
+
+<div dir="rtl" class="container mt-4">
+    <div class="container-fluid">
+        {% if isTax == True %}
+        <div class="row mb-2">
+            {% for mnt in monitors %}
+            <div class="col-6 card bg-black ">
+                <div class="card-body text-info">
+                    <div class="mb-1">
+                        <span class="badge badge-soft-primary float-end">ثلاث أشهر</span>
+                        <h5 class="card-title">الضريبة الواجب أدآؤها<h3><span>{{mnt.name}}</span> : </h3></h5>
+                        <div class="text-center">
+                            <h6><span>{{mnt.count}}</span> <span>زبون</span></h6>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h2>
+                            <span>{{mnt.tax}}</span> <span>درهم</span>
+                        </h2>
+                    </div>
+                </div>
+            </div> 
+            {% endfor %}
+
+<!--
+            <div class="col-6 card bg-black ">
+                <div class="card-body text-info">
+                    <div class="mb-1">
+        
+                        <span class="badge badge-soft-primary float-end">ثلاث أشهر</span>
+                        
+                        <h5 class="card-title">الضريبة الواجب أدآؤها<h3><span>محمد مفتاح</span> : </h3></h5>
+                        <div class="text-center">
+                            <h6><span>{{tax.mohamed_count}}</span> <span>زبون</span></h6>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h2>
+                            <span>{{tax.taxMohamed}}</span> <span>درهم</span>
+                        </h2>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="datatable-buttons" dir="rtl" class="table table-striped dt-responsive nowrap w-100">
+                            <!--
+                        <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
+                        <table id="selection-datatable" class="table dt-responsive nowrap w-100">
+                        -->
+                            <thead>
+                                <tr>
+                                    <th>الرقم الترتيبي</th>
+                                    <th>الإسم الكامل</th>
+                                    <th>رقم ب.ت.و</th>
+                                    <th>تاريخ التسجيل</th>
+                                    <th>التعليم النظري</th>
+                                    <th>التعليم التطبيفي</th>
+                                    <th>المبلغ</th>
+                                    <th>الثمن المدفوع</th>
+                                    <th>الباقي</th>
+                                    <th>النتيجة</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                {% for clt in clients %}
+                                <tr>
+                                    <td>{{clt.nclient}}</td>
+                                    <td>{{clt.fnameAR}} {{clt.lnameAR}}</td>
+                                    <td>{{clt.cnie}}</td>
+                                    <td>{{clt.date_joined|date:'d-m-Y'}}</td>
+                                    <td>{{clt.get_controle.0.theoretic}}</td>
+                                    <td>{{clt.get_controle.0.practical}}</td>
+                                    <td>{{clt.price}}</td>
+                                    <td>{{clt.totalpaid}}</td>
+                                    <td>{{clt.rest}}</td>
+                                    <td>{{clt.get_controle.0.get_result_display}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div> 
+</div> 
+
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+
+<script src="{% static 'assets/libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+
+<script src="{% static 'assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+
+<script src="{% static 'assets/libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+
+<script src="{% static 'assets/js/pages/datatables.js' %}"></script>
+{% endblock content %}

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}بيانات المدرب{% endblock %} 
+{% block content %}
+
+<div class="container p-3 my-4 rounded border border-info">
+    
+    {% if is_editpage == True %}
+    <h2 class="text-center">تعديل بيانات المدرب</h2>
+    {% else  %}
+    <h2 class="text-center">أضف مدرب</h2>
+    {% endif %}
+
+    <hr>
+    {% include 'partials/_alerts.html' %}
+
+    
+    {% if vehicules.count < 1  %}
+        <div class="alert alert-warning text-center " role="alert">
+            <h2>عذرا، لم يتم تسجيل أي عربة.</h2>
+        </div>
+        <div class="d-grid gap-2"> 
+            <a href="{% url 'addcar' %}" class="btn btn-success ">إضافة عربة</a> 
+        </div>
+    {% else %}
+
+        {% if is_added == True %} 
+            <form method="post" style="display:none;" enctype="multipart/form-data">
+        {% else  %}
+            <form method="post" enctype="multipart/form-data">
+        {% endif %}
+        
+                {% csrf_token %}
+
+                <div class="input-group mb-3">
+                    <span dir="ltr" class="input-group-text d-none d-sm-block" id="basic-addon1">إسم العربة</span>
+                    <select class="form-select text-center" name="vehicule" aria-label="إسم العربة" required>
+                        <option>إختر إسم العربة</option>
+                        {% for vl in vehicules %}
+                        <option value="{{vl.id}}" {% if vehicule == vl.id  %}selected{% endif %}>{{vl.vehicule_name}}</option>
+                        {% endfor %}
+                    </select>
+                    <a href="{% url 'addcar' %}" class="btn btn-warning">أضف عربة</a>
+
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Vehicule name</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">الإسم الشخصي</span>
+                    <input type="text" name="fnameAR" value="{{fnameAR}}"  class="form-control" maxlength="15" placeholder="الإسم الشخصي"required>
+                    <span class="input-group-text"> | | </span>
+                    <input type="text" dir="ltr" name="fnameLA" value="{{fnameLA}}" class="form-control" maxlength="15" placeholder="First name"  required>
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">First name</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">الإسم العائلي</span>
+                    <input type="text" name="lnameAR" value="{{lnameAR}}" class="form-control" maxlength="15" placeholder="الإسم العائلي"  required>
+                    <span class="input-group-text"> | | </span>
+                    <input type="text" dir="ltr" name="lnameLA" value="{{lnameLA}}" maxlength="15" class="form-control" placeholder="Last name" required>
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Last name</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">رقم ب.ت.و</span>
+                    <input type="text" name="cnie" value="{{cnie}}" dir="ltr" class="form-control text-center" placeholder="رقم بطاقة التعريف الوطنية" maxlength="15" required>
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">CNIE</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">الجنس</span>
+                    <div  class="text-center form-control ">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio1">ذكر</label>
+                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1"
+                                {% if gender == 1  %}
+                                checked 
+                                {% elif  not gender  %}
+                                checked
+                                {% endif %}
+                            value="1" >
+                            <label class="form-check-label" for="inlineRadio1">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label" for="inlineRadio2">انثى</label>
+                            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" 
+                                {% if gender == 2  %}
+                                    checked
+                                {% endif %}
+                            value="2" >
+                            <label class="form-check-label" for="inlineRadio2">Female</label>
+                        </div>
+                    </div>
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Gender</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">الجنسية</span>
+                    {% if  is_editpage == False %}
+                    <input type="text" name="nationality" value="MAROCAINE" maxlength="15" dir="ltr" class="form-control text-center" placeholder="الجنسية" >
+                    {% else %}
+                    <input type="text" name="nationality" value="{{nationality}}" maxlength="15" dir="ltr" class="form-control text-center" placeholder="الجنسية" >
+                    {% endif  %} 
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Nationality</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">رقم الهاتف</span>
+                    <input type="tel" name="phone" value="{{phone}}" dir="ltr" class="form-control text-center" maxlength="14" placeholder="رقم الهاتف" required>
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">Phone number</span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span dir="ltr" class="input-group-text" id="basic-addon1">الصنف</span>
+                    <select class="form-select text-center" value="{{category}}" name="category" aria-label="الصنف" required>
+                        <option value="1">A</option>
+                        <option value="2">A1</option>
+                        <option value="3" selected>B</option>
+                    </select>
+                    <span class="input-group-text" id="basic-addon1">Category</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">الرقم الوطني للمدرب</span>
+                    <input lang="en" type="number" name="monitor_authorization_number" value="{{monitor_authorization_number}}" dir="ltr" class="form-control text-center" placeholder="الرقم الوطني للمدرب" required>
+                    <span class="input-group-text d-none d-sm-block" id="basic-addon1">monitor authorization number</span>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="inputGroupFile02">الصورة الشخصية</label>
+                    <input type="file" class="form-control" name="photo_mnt" accept="image/*" id="photo_mnt">
+                    <label class="input-group-text d-none d-sm-block" for="photo_mnt">Profile photo</label>
+                </div>
+                
+                <br />
+                {% if is_editpage == True  %}
+                <div class="d-grid gap-2">
+                    <button type="submit" name="btnedit" class="btn btn-danger">تعديل البيانات</button>  
+                </div>   
+                
+                {%else%}
+                    <div class="d-grid">
+                        <button type="submit" name="btnsave" class="btn btn-success">تسجيل</button>
+                    </div>
+                {% endif %}
+            </form>
+            <div class="d-grid mt-2">
+                <a href="{% url 'monitors' %}" class="btn btn-primary">الرجوع إلى قائمة المدربون</a>   
+            </div>
+    {% endif %}
+
+</div>
+{% endblock content %}

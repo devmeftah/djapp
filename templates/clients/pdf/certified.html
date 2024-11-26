@@ -1,0 +1,133 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+    <head>
+        <!-- Use "static" template tag and configure STATIC_URL as usual. -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}" />
+        <style>
+            body{
+                font-family: "simpfxo";
+              }
+          table{
+            width: 100%;
+            border: 2px solid black;
+            border-collapse: collapse;
+          }
+          th, td {
+            padding: 5px 25px 5px 10px;
+          }
+        </style>
+    </head>
+    <body dir="rtl">
+      <section>
+        <div class="text-center ">        
+          <h3><b>شهادة نهاية  التكوين  في تعليم السياقة</b></h3>
+        </div>
+        <span>العلامة التجارية للمؤسسة  أو الاسم التجاري للمؤسسة :</span><span>{{ societe.societe_name }}</span><br>
+        <span>رقم الرخصة : </span><span>{{ societe.license_number }}</span><br>
+        <span>رقم القيد  في السجل الوطني الخاص بمؤسسات تعليم السياقة : </span><span>{{ societe.license_number }}</span><br>
+        
+        <div class="d-flex ">
+          <div class="me-5 "><span>رقم القيد في سجل الضريبة المهنية : </span><span>{{ societe.reg_num_pro_tax }}</span></div>
+          <div><span>رقم القيد في السجل التجاري : </span><span>{{ societe.reg_num_in_cms }}</span></div>
+        </div>
+        <span>المدينة: </span><span>{{ societe.city }}</span><br>
+        <span>العـنوان: </span><span>{{ societe.address }}</span><br>
+
+        <div class="d-flex ">
+          <div class="me-5 "><span>الهاتــف : </span><span>{{ societe.phone }}</span></div>
+          <div><span>الفاكس : </span><span>{{ societe.fix }}</span></div>
+        </div>
+
+        <span>البريد الالكتروني : </span><span>{{ societe.email }}</span><br>
+
+        <p><b>الممثل القانوني للمؤسسة :</b></p>
+
+        <table >
+          <tr>
+            <td>
+              <span>الاسم الشخصي : </span><span>{{ societe.ceo_fname }}</span><br>
+              <span>الاسم العائــــلي: </span><span>{{ societe.ceo_lname }}</span><br>
+              <span>العنــــــــــــوان: </span><span>{{ societe.address }}</span><br>
+              <span>رقم الهــــــاتف : </span><span>{{ societe.phone }}</span>
+              </td>
+          </tr>
+        </table>
+      </section>
+      <section class="mt-2">
+        <div>
+          <span>اشهد أن السيد(ة): </span><span>{{ client.fnameAR }} {{ client.lnameAR }}</span> <span>{{ client.fnameLA }} {{ client.lnameLA }}</span>
+        </div>
+        <div>
+          <span>الحامل(ة) للبطاقة الوطنية  للتعريف رقم : </span><span>{{ client.cnie }}</span>
+        </div>
+        <div>
+          <span>: (Référence web) رقم تسجيل المرشح الممنوح من طرف الإدارة </span><span><b>{{client.ncreation}}</b></span><br>
+        </div>
+        <div>
+          <span>بناء على  عقد التكوين  الموقع بين الطرفين بتاريخ : </span><span>{{ client.date_joined|date:'d/m/Y' }}</span>
+        </div> 
+        <div>
+          <span>تلقى (تلقت) بهذه المؤسسة  دروسا نظرية وتطبيقية في تعليم سياقة المركبات من صنف "ب"، بما مجموعه :20 ساعة  بالنسبة للتكوين      
+            النظري 20 ساعة بالنسبة للتكوين التطبيقي ، طبقا للبرنامج الوطني لتعليم السياقة.
+            </span>
+        </div>
+      </section>
+      <section>
+        <div>وقد اشرف على التكوين  النظري المدرب الوارد اسمه بعده :</div>
+        <div class="d-flex justify-content-around">
+          <div><span>اسم المدرب : </span><span>مفتاح محمد</span></div>
+          <div><span>رقم رخصته  : </span><span>1596</span></div>
+        </div>
+      </section>
+      <section>
+        <div>وقد اشرف على التكوين  التطبيقي المدرب الوارد اسمه بعده :</div>
+        <div class="d-flex justify-content-around">
+          <div><span>اسم المدرب : </span><span>{{ client.monitor.fnameAR }} {{ client.monitor.lnameAR }}</span></div>
+          <div><span>رقم رخصته  : </span><span>{{ client.monitor.monitor_authorization_number }}</span></div>
+        </div>
+      </section>
+      <section>
+        <div class="row">
+          <div class="col-7"><span>كما تلقى(ت) تكوينه(ها) بواسطة المركبة من صنف : </span></div>
+          <div class="col-5"><span>المسجلة تحت اسم المؤسسة في رقم :  </span></div>
+        </div>
+      </section>
+      <section>
+        <div class="row">
+          <div class="col-8 row justify-content-end "><span class="me-5">"{{client.monitor.vehicule.vehicule_name}}"</span></div>
+          <div class="col-4 row justify-content-end" ><span>{{client.monitor.vehicule.vehicule_registration}}</span></div>
+        </div>
+      </section>
+      <section class="my-2">
+        <div>
+          <span class="ms-3">حرر ب </span><span>{{ societe.city }}</span>
+          <span class="ms-5">بتاريخ </span><span>{{thisDate|date:'d/m/Y'}}</span>
+        </div>
+      </section>
+
+      <section>
+        <div class="d-flex justify-content-around">
+          <div><span><b>طابع المؤسسة واسم وتوقيع الممثل القانوني للمؤسسة</b></span></div>
+          <div><span><b>اسم وتوقيع المرشح</b></span></div>
+        </div>
+      </section>
+      <!--
+        <span></span><span><b></b></span><br>
+
+        <div>
+          <span></span><span class="me-5"><b></b></span>
+          <span class="me-5"></span><span><b></b></span>
+        </div>
+
+        <div>
+          <span>
+            <b></b>
+          </span>
+          <span></span>
+        </div>
+      -->
+      <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+</html>

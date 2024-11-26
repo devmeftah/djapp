@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}الموارد المالية{% endblock %}
+{% block content %}
+<div class="container p-3 my-4 rounded border border-success">
+    <h2 class="text-center"><span>الدفعات</span> <span>({{ username }})</span>
+        {% if isPaid == True %}
+         <a class="btn btn-success" href="{% url 'paiementpdf' pk=clt_id %}">تحميل pdf</a>
+         {% endif %}
+        
+        </h2>
+    <hr>
+    <div id="popup-messages-content">
+        {% include 'partials/_alerts.html' %}
+    </div>
+
+
+    <form method="post">
+        {% csrf_token %}
+    
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">المبلغ الإجمالي</span>
+  
+            <input lang="en" type="number" min="0" max="9999" name="price" id="price" value="{{price}}" class="form-control text-center " placeholder="المبلغ الإجمالي" readonly>
+            <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">أضف دفعة</a>
+            <span class="input-group-text" id="basic-addon1">Total price</span>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="editprice" id="editprice">
+            <label class="form-check-label" for="editprice">تعديل المبلغ الإجمالي</label>
+        </div>        
+       <br />
+       <div class="d-grid gap-2"> 
+        <button type="submit" style="display: none;" id="btnsave" name="btnsave"  class="btn btn-danger" >تعديل المبلغ</button>
+        <a href="{% url 'clients' %}" class="btn btn-success">الرجوع إلى قائمة الزبناء</a>   
+     </div>   
+    </form>
+
+    <table id="priceTable" class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th scope="col">تاريخ الدفعة</th>
+            <th scope="col">قيمة الدفعة</th>
+          </tr>
+        </thead>
+
+        {% if isPaid == True %}
+        <tbody  class="table-group-divider">
+                {% for pd in  paiement.paidTotal %}
+                <tr>
+                    <td>{{pd.payement_date|date:'d/m/Y'}}</td>
+                    <td>{{pd.paid}} درهم</td>
+                </tr>
+                {% endfor %}
+
+        </tbody>
+        {% else %}
+        <tbody  class="table-group-divider">
+         </tbody>
+
+        {% endif %}
+        <tfoot  class="table-group-divider text-danger">
+            <tr>
+                <td>المبلغ المدفوع</td>
+                <td id="paidTd">{{paiement.paidSum}} درهم</td>
+            </tr>
+            <tr class="table-group-divider"> 
+                <td>الباقي</td>
+                <td id="restTd">{{rest}} درهم</td>
+            </tr>
+        </tfoot>
+    </table>
+    <!--
+        <div class="alert alert-warning text-center m-4" role="alert">
+            <h2>عذرا، لم يتم تسجيل أي دفعة حاليا.</h2>
+        </div>
+    -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">دفعة جديدة</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <form method="post" id="paid-form"> 
+                {% csrf_token %} 
+                <label for="paid" class="col-form-label">ثمن الدفعة</label>
+                <input type="text" name="paid" id="paid" class="form-control text-center " >
+            </form> 
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">تراجع</button>
+            <button type="button" name="addpaid" id="addpaid" class="btn btn-success" data-bs-dismiss="modal">تأكيد</button>
+        </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script> 
+
+<script type="text/javascript"> 
+    $(document).ready(function () { 
+        $('#editprice').change(function () {
+            if(this.checked == true){
+                document.getElementById('price').readOnly = false
+                //$("#price").removeAttr("readOnly")
+                $("#btnsave").show()
+            }else{
+                //$("#price").attr("readOnly")
+                document.getElementById('price').readOnly = true
+                $("#btnsave").hide()
+            }
+        })
+        $('#addpaid').on('click', function () {
+
+            var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+            var formData = {
+                'paid': $('#paid').val(),
+            };
+
+            // Send AJAX request
+            $.ajax({
+                type: 'POST',
+                //url: '/clients/paid',
+                url:'{% url "paiement" clt_id=clt_id %}', 
+                data: formData,
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
+                success: function (data) {
+                    var tbody = $("tbody")
+                    //console.log("data",data);
+                    if(data.isAdd){
+                        document.getElementById('restTd').innerHTML = data.rest+' درهم'
+                        document.getElementById('paidTd').innerHTML = data.paidTotal+' درهم'
+                        html = "<tr><td>"+data.datanow+"</td><td>"+data.paid+" درهم</td></tr>";
+                        tbody.append(html)
+                    }
+
+                    var message = $(`
+                    <div class="alert alert-${data.message.tag} alert-dismissible fade show" role="alert">
+                    ${data.message.msg}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `).hide();
+                    //var elMessages = $('#popup-messages-content');
+                    $("#popup-messages-content").append(message);
+                    message.fadeIn(500);
+
+                    setTimeout(function() {
+                        message.fadeOut(500, function() {
+                            message.remove();
+                        });
+                    }, 3000);
+                },
+                failure:function () {
+                    alert('data');
+                },
+      
+                error: function () {
+                    alert('data');
+                }
+            });
+        });
+    } );
+
+</script>    
+
+{% endblock content %}

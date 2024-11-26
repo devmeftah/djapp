@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}بيانات العربة{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container px-5 py-2 my-3 rounded border border-success">
+    <h2 class="text-center">أضف معلومات المؤسسة</h2>
+    {% include 'partials/_alerts.html' %}
+
+    {% if is_added == True %} 
+        <form method="post" enctype="multipart/form-data"  style="display:none;" >
+    {% else  %}
+        <form method="post" enctype="multipart/form-data">
+    {% endif %}
+
+        {% csrf_token %}
+        {{ steform|crispy }}
+        <div class="d-grid gap-2">
+            <input class="btn btn-success" name="savesociete" type="submit" value="تأكيد">
+        </div>   
+    </form>
+    <div class="d-grid mt-2">
+        <a href="{% url 'monitors' %}" class="btn btn-primary">الرجوع إلى قائمة المدربون</a>   
+    </div>
+</div>
+ 
+
+{% endblock content %}

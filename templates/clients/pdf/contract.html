@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+    <head>
+        <!-- Use "static" template tag and configure STATIC_URL as usual. -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}" />
+        <style>
+          body{
+            font-family: "simpfxo";
+          }
+        </style>
+    </head>
+    <body dir="rtl">
+      <section class="text-center ">
+        <span><b>عقد التكوين بين المرشح ومؤسسة تعليم السياقة</b></span><br>
+        <span>رخصة السياقة من صنف </span>
+        {% if client.category == 1 %}
+        <span>"A"</span>
+        {% elif client.category == 2 %}
+        <span>"A1"</span>
+        {% else %}
+        <span>"B"</span>
+        {% endif %}
+      </section>
+      <section>
+        <span>رقم : </span><span><b>{{client.nclient}}</b></span><br>
+        <span>هذا العقد مبرم بين : </span><span><b>{{societe.ceo_fname}} {{societe.ceo_lname}}</b></span><br>
+        <span>  مؤسسة تعليم السياقة [1]: </span><span><b>{{societe.societe_name}}</b></span><br>
+        <span>رقم القيد في السجل الوطني الخاص بمؤسسات تعليم السياقة  (رقم الرخصة) : </span><span><b>{{societe.license_number}}</b></span><br>
+        <span>العنوان : </span><span><b>تجزئة الخير رقم 24 بطانة سلا</b></span><br>
+        <span>  رقم القيد في سجل الضريبة المهنية : </span><span><b>{{societe.reg_num_pro_tax}}</b></span><br>
+        <div>
+          <span>  رقم القيد في السجل التجاري : </span><span class="me-5"><b>{{societe.reg_num_in_cms}}</b></span>
+          <span class="me-5"></span>المدينة :  <span><b>{{societe.city}}</b></span>
+        </div><br>
+        <div>
+          <span>الهاتف : </span><span class="me-5"><b>{{societe.phone}}</b></span>
+          <span class="me-5"></span>الفاكس :  <span><b>{{societe.fix}}</b></span>
+        </div>
+        <span>البريد الإلكتروني : </span><span><b>{{societe.ceo_mail}}</b></span><br>
+        <div class="text-center ">
+
+        </div>
+
+        <div class="d-flex  flex-row-reverse">
+          <span >المؤسسة المسماة <b>"{{societe.societe_name}}"</b></span>
+        </div>
+
+        <span>والسيد (ة) : </span><span><b>{{client.fnameAR}} {{client.lnameAR}}</b></span> <span><b>{{client.fnameLA}} {{client.lnameLA}}</b></span><br>
+        <div>
+          <span>رقم ب.ت.و : </span><span class="me-5"><b>{{client.cnie}}</b></span>
+          <span ></span>المزداد(ة) ب : <span><b>{{client.placeofbirthAR}}</b></span>
+          <span class="ms-5 "></span>بتاريخ : <span><b>{{client.dateofbirth|date:'d/m/Y'}}</b></span>
+        </div>
+        <span>القاطن (ة) ب : </span><span><b>{{client.addressAR}}</b></span><br>
+        <span> : (Référence web) رقم تسجيل المرشح الممنوح من طرف الإدارة</span><span><b>{{client.ncreation}}</b></span><br>
+        <div class="d-flex  flex-row-reverse">
+          <span>المرشح (ة) المسمى(ة) <b>"{{client.fnameAR}} {{client.lnameAR}}"</b></span>
+        </div>
+      </section>
+      <div class="text-center mt-3">
+        <p><b>اتفق الطرفان على ما يلي</b></p>
+      </div>
+      <section>
+        <div>
+          <span><b>المادة الأولـــى : موضوع العقد</b></span><br>
+           <span>يهدف هذا العقد إلى تكوين المرشح وتمكينه من اكتساب المعارف والمهارات الضرورية اللازمة التي تمكنه من سياقة مركبة تتطلب    قيادتها رخصة السياقة من صنف ''B''، طبقا للبرامج المحددة من طرف الإدارة.
+              كما يحدد حقوق وواجبات كلا الطرفين مع مراعاة القوانين والأنظمة الجاري بها العمل في هذا الشأن.
+          </span>
+        </div>
+
+        <div>
+          <span>
+            <b>المادة 2 : مدة العقد</b>
+          </span><br>
+          <span>يمتد هذا العقد لمدة ستة أشهر ابتداء من تاريخ توقيعه. ويمكن تمديده، في حالة الاتفاق بين الطرفين، لمدة لا تتعدى ثلاثة أشهر.</span>
+        </div>
+        <div>
+          <span>
+            <b>المادة 3 : التزامات المؤسسة</b>
+          </span><br>
+          <span>تلتزم المؤسسة بتكوين المرشح طبقا للبرنامج الوطني لتعليم السياقة.
+            تلقن الدروس النظرية والتطبيقية، تحت إشراف مدير المؤسسة، من طرف مدرب أو  مدربي تعليم السياقة مرخص لهم، تشغلهم    المؤسسة لهذا الغرض وبواسطة مركبات لتعليم السياقة في ملكيتها.
+            تلتزم المؤسسة بتوفير المركبة التي يتم بواسطتها إجراء الاختبار التطبيقي.
+          </span>
+        </div>
+        <br>
+        <div><small style="font-size: 10px;">[1]  الاسم التجاري للمؤسسة : ممثلة من طرف "اسم صاحب رخصة المؤسسة أو اسم الممثل القانوني إذا كان المستفيد شخصا معنويا</small></div>
+
+
+
+        <div>
+          <span>  لا يمكن الشروع في التكوين النظري إلا بعد حصول المرشح على رقم التسجيل الممنوح له من طرف الإدارة.
+            تلتزم المؤسسة بإخبار المرشح فورا بحصوله على هذا الرقم، كما تلتزم بتسليم المرشح شهادة نهاية التكوين فور إنهائه له.
+            تحتفظ المؤسسة بحق إرجاء دروس التكوين إلى تاريخ لاحق في حالة قوة قاهرة وفي كل الحالات التي تكون فيها السلامة غير   متوفرة.
+          </span><br>
+          <span>بعد استفادة المرشح من عدد ساعات التكوين النظري والتطبيقي المتفق عليها، تلتزم المؤسسة بتقديمه لاجتياز الامتحانات لنيل رخصة السياقة في حدود المقاعد الممنوحة من طرف الإدارة .</span>
+        </div>
+        <div>
+          <span>
+            <b>المادة 4 : التزامات المرشح</b>
+          </span><br>
+          <span>  المادة 4 : التزامات المرشح
+            إذا توقف المرشح عن التكوين، سواء بصفة مؤقتة أو نهائية، وكيفما كانت الأسباب، يلتزم بإخبار المؤسسة كتابيا،
+            في حالة التوقف لأكثر من ثلاثة ( 3 ) أشهر متتالية، يحق للمؤسسة مطالبة المرشح بأداء مبالغ الخدمات المتبقية، وغير المؤداة ؛  
+            إذا انقطع المرشح عن التكوين لمدة تفوق ستة ( 6 ) أشهر، يعتبر متخليا عن التكوين ولا يحق له أن يسترجع ما دفعه من أجله.
+            إذا تخلى المرشح عن التكوين لسبب يعود له، يؤدي التعريفة كاملـة.
+            في حالة عدم النجاح في الامتحان، يلتزم المرشح بأداء مصاريف إعادة تكوينه وفقا لنفس التعريفة.
+          </span>
+        </div>
+        <div>
+          <span>
+            <b>المادة 5 : مدة التكوين</b>
+          </span><br>
+          <span>اتفق الطرفان على تحديد عدد ساعات التكوين في 20 ساعة بالنسبة للتكوين النظري و 20 ساعة بالنسبة للتكوين التطبيقي. لا      يقل هذا العدد عن العدد الأدنى المحدد بالمادة 32 من دفتر التحملات الخاص بفتح واستغلال مؤسسات تعليم السياقة.</span>
+        </div>
+        <div>
+          <span>
+            <b>المادة 6 : تعريفة التكوين</b>
+          </span><br>
+          <span>تحتسب التعريفة الإجمالية للتكوين على أساس تعريفة ساعة التكوين النظري والتطبيقي المحددة في المادة 1 من القرار الذي يحدد  تعريفة ساعة التكوين النظري والتطبيقي.</span>
+        </div>
+        <div>
+          <span>
+            <b>المادة 7 : كيفيات الأداء</b>
+          </span><br>
+          <span>تسلم للمرشح فاتورة تحدد المبالغ المدفوعة للمؤسسة. تكون هذه الفاتورة مؤرخة وموقعة من طرف صاحب المؤسسة تحمل هذه الفاتورة اسم وطابع المؤسسة، وفقا للتشريعات الجاري بها العمل.
+            في حالة الاتفاق بين الطرفين، يمكن أداء مبلغ التكوين على أقساط.
+          </span>
+        </div>
+      </section>
+      <section>
+        <div><span>عقد محرر في ثلاثة نظائر أصلية،</span></div>
+        <div>
+          <span class="ms-5">حرر ب </span><span>{{societe.city}}</span>
+          <span class="ms-5">بتاريخ </span><span>{{thisDate|date:'d/m/Y'}}</span>
+        </div>
+        <br>
+        <div class="d-flex justify-content-around">
+          <div><span><b>توقيع صاحب المؤسسة أو ممثله القانوني</b></span></div>
+          <div><span><b>توقيع المرشح أو ولي أمره مصادق عليه</b></span></div>
+        </div>
+      </section>
+      <!--
+        <div>
+          <span>
+            <b></b>
+          </span>
+          <span></span>
+        </div>
+      -->
+      <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+</html>

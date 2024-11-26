@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}بحث متقدم{% endblock %}
+{% block content %}
+<div class="container p-4 my-3 rounded border border-success">
+    <h2 class="text-center">بحث متقدم</h2> 
+    <hr>
+    {% include 'partials/_alerts.html' %}
+        <form method="get" action="{% url 'clients' %}">
+        <div class="input-group mb-3">
+            <span dir="ltr" class="input-group-text d-none d-sm-block" id="basic-addon1">إسم المدرب</span>
+            <select class="form-select text-center" name="smnt" aria-label="إسم المدرب">
+                <option value="">كل المدربين</option>
+                {% for mnt in monitors %}
+                <option value="{{mnt.id}}">{{mnt.fnameAR}} {{mnt.lnameAR}}</option>
+                {% endfor %}
+            </select>
+            <span class="input-group-text d-none d-sm-block" id="basic-addon1">Monitor name</span>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text d-none d-sm-block" id="basic-addon1">الإسم الشخصي</span>
+          <input type="text" name="sfnameAR"  class="form-control" placeholder="الإسم الشخصي" aria-label="الإسم الشخصي" aria-describedby="basic-addon1">
+          <span class="input-group-text"> | | </span>
+          <input type="text" dir="ltr" name="sfnameLA"  class="form-control" placeholder="First name" aria-label="First name" aria-describedby="basic-addon1">
+          <span class="input-group-text d-none d-sm-block" id="basic-addon1">First name</span>
+      </div>
+      <div class="input-group mb-3">
+          <span class="input-group-text d-none d-sm-block" id="basic-addon1">الإسم العائلي</span>
+          <input type="text" name="slnameAR"  class="form-control" placeholder="الإسم العائلي" aria-label="الإسم العائلي " aria-describedby="basic-addon1">
+          <span class="input-group-text"> | | </span>
+          <input type="text" dir="ltr" name="slnameLA" class="form-control" placeholder="Last name" aria-label="Last name" aria-describedby="basic-addon1">
+          <span class="input-group-text d-none d-sm-block" id="basic-addon1">Last name</span>
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group mb-3">
+            <span class="input-group-text d-none d-sm-block">الثمن</span>
+            <span class="input-group-text">من </span>
+            <input type="number" maxlength="4" max="9999" min="0" value="0" name="spfrom" class="form-control text-center " aria-label="MAD">
+            <span class="input-group-text mr-2 d-none d-sm-block">درهم</span>
+            <span class="input-group-text">الى </span>
+            <input type="number" maxlength="4" max="9999" min="0" value="3000" name="spto" class="form-control text-center " aria-label="MAD">
+            <span class="input-group-text">درهم</span>
+        </div>
+      </div>
+      <div class="input-group mb-3">
+          <span class="input-group-text d-none d-sm-block" id="basic-addon1">الجنس</span>
+          <div  class="text-center form-control">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label" for="inlineRadio">الجميع</label>
+              <input class="form-check-input" type="radio" name="sgender" id="inlineRadio" checked>
+          </div>
+              <div class="form-check form-check-inline">
+                  <label class="form-check-label" for="inlineRadio1">ذكر</label>
+                  <input class="form-check-input" type="radio" name="sgender" id="inlineRadio1" value="1">
+              </div>
+              <div class="form-check form-check-inline">
+                  <label class="form-check-label" for="inlineRadio2">انثى</label>
+                  <input class="form-check-input" type="radio" name="sgender" id="inlineRadio2" value="2">
+              </div>
+          </div>
+          <span class="input-group-text d-none d-sm-block" id="basic-addon1">Gender</span>
+      </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text d-none d-sm-block" id="basic-addon1">رقم الهاتف</span>
+            <input type="number" name="sphone" dir="ltr" class="form-control text-center" placeholder="رقم الهاتف" aria-label="رقم الهاتف" aria-describedby="basic-addon1">
+            <span class="input-group-text d-none d-sm-block" id="basic-addon1">Phone number</span>
+        </div>
+       <div class="d-grid mt-2 gap-2 mb-2">
+          <button type="submit" class="btn btn-success">إبحث</button>
+          <a href="{% url 'clients' %}" class="btn btn-info">الرجوع إلى قائمة الزبناء</a>   
+        </div>   
+
+    </form>
+
+
+
+
+       
+        <!-- dosnt work with 
+        <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input" name="scs" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+            حساسية الأحرف
+            </label>
+          </div>
+        </div>
+        -->  
+
+</div>
+{% endblock content %}
+

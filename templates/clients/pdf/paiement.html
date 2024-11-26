@@ -1,0 +1,123 @@
+{% load static %}
+<!doctype html>
+<html lang="ar">
+    <head>
+        <!-- Use "static" template tag and configure STATIC_URL as usual. -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}" />
+        <style>
+          .nametab {
+            border: 5px outset black;
+            border-spacing: 30px;
+            width: 100%;
+          }
+          th, td {
+            border: 1px solid black;
+          }
+ 
+          table {
+            border: 5px double black;
+            border-spacing: 30px;
+            width: 100%;
+          }
+          
+        </style>
+    </head>
+    <body dir="rtl">
+      <section>
+        <div class="alert alert-secondary rounded-4 " >
+        <div class="text-center border-bottom border-black  pb-1">        
+          <h1><b>مؤسسة {{societe.societename}} لتعليم السياقة</b></h1>
+        </div>
+          <h5 class="pt-2">{{societe.address}}</h5>
+          <h5 class=""><span>رقم الهاتف</span> : <span>{{societe.phone}}</span></h5>
+        </div>
+        <div class="text-center ">
+          <h2>
+            <b>معلومات المرشح : </b>
+          </h2>
+        </div>
+        <table class="nametab text-center ">
+          <tbody>
+            <tr>
+              <th>الإسم الكامل : </th>
+              <td>{{client.fullname}}</td>
+
+            </tr>
+            <tr>
+              <th>الرقم الترتيبي : </th>
+              <td>{{client.nclient}}</td>
+            </tr>
+            <tr> 
+              <th>رقم ب.ت.و : </th>
+              <td>{{client.cnie}}</td>
+            </tr>
+          </tbody>
+        </table>
+        </section>
+        <div class="text-center mt-2">
+          <h2><b>الدفعات : </b></h2>
+        </div>
+      <section>
+        <table class="text-center">
+          <thead>
+            <tr class="border-2">
+              <th>تاريخ الدفعة</th>
+              <th>قيمة الدفعة</th>
+            </tr>
+          </thead>
+          <tbody >
+              {% for pd in  paidTotal %}
+              <tr>
+                  <td>{{pd.payement_date|date:'d/m/Y'}}</td>
+                  <td>{{pd.paid}} درهم</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+          
+          <tfoot class="border-2">
+            <tr >
+              <td><b>المبلغ الإجمالي</b></td>
+              <td>{{price}} درهم</td>
+          </tr>
+            <tr>
+                <td><b>المبلغ المدفوع</b></td>
+                <td>{{paidSum}} درهم</td>
+            </tr>
+            {% if rest > 0 %}
+            <tr> 
+                <td><b>الباقي</b></td>
+                <td>{{rest}} درهم</td>
+            </tr>
+            {% endif %}
+        </tfoot>
+      </table>
+    </section>
+      <section class="mt-5">
+        <div>
+          <span class="ms-5">حرر ب </span><span>سلا</span>
+          <span class="ms-5">بتاريخ </span><span>{{thisDate|date:'d/m/Y'}}</span>
+        </div>
+        <br>
+        <div class="d-flex justify-content-around">
+          <div><span><b>توقيع صاحب المؤسسة أو ممثله القانوني</b></span></div>
+          <div><span><b>توقيع المرشح أو ولي أمره</b></span></div>
+        </div>
+      </section>
+      <!--
+        <span></span><span><b></b></span><br>
+
+        <div>
+          <span></span><span class="me-5"><b></b></span>
+          <span class="me-5"></span><span><b></b></span>
+        </div>
+
+        <div>
+          <span>
+            <b></b>
+          </span>
+          <span></span>
+        </div>
+      -->
+      <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+</html>
